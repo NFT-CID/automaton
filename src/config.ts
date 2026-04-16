@@ -32,7 +32,10 @@ export function loadConfig(): AutomatonConfig | null {
 
   try {
     const raw = JSON.parse(fs.readFileSync(configPath, "utf-8"));
-    const apiKey = raw.conwayApiKey || loadApiKeyFromConfig();
+    const apiKey =
+      process.env.CONWAY_API_KEY ||
+      raw.conwayApiKey ||
+      loadApiKeyFromConfig();
 
     // Deep-merge treasury policy with defaults
     const treasuryPolicy: TreasuryPolicy = {
@@ -68,7 +71,15 @@ export function loadConfig(): AutomatonConfig | null {
         typeof raw.sandboxId === "string"
           ? raw.sandboxId.trim()
           : DEFAULT_CONFIG.sandboxId,
+      conwayApiUrl:
+        process.env.CONWAY_API_URL ||
+        raw.conwayApiUrl ||
+        DEFAULT_CONFIG.conwayApiUrl,
       conwayApiKey: apiKey,
+      openaiApiKey: process.env.OPENAI_API_KEY || raw.openaiApiKey,
+      anthropicApiKey:
+        process.env.ANTHROPIC_API_KEY || raw.anthropicApiKey,
+      ollamaBaseUrl: process.env.OLLAMA_BASE_URL || raw.ollamaBaseUrl,
       treasuryPolicy,
       modelStrategy,
       soulConfig,

@@ -1,0 +1,29 @@
+services:
+  automaton:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: automaton:local
+    container_name: automaton
+    restart: unless-stopped
+    stdin_open: true
+    tty: true
+    environment:
+      HOME: /root
+      NODE_ENV: production
+      CONWAY_API_URL: ${CONWAY_API_URL:-https://api.conway.tech}
+      CONWAY_API_KEY: ${CONWAY_API_KEY:-}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+      OLLAMA_BASE_URL: ${OLLAMA_BASE_URL:-}
+      AUTOMATON_NAME: ${AUTOMATON_NAME:-}
+      AUTOMATON_GENESIS_PROMPT: ${AUTOMATON_GENESIS_PROMPT:-}
+      AUTOMATON_CREATOR_ADDRESS: ${AUTOMATON_CREATOR_ADDRESS:-}
+      AUTOMATON_CREATOR_MESSAGE: ${AUTOMATON_CREATOR_MESSAGE:-}
+      AUTOMATON_CHAIN_TYPE: ${AUTOMATON_CHAIN_TYPE:-evm}
+      AUTOMATON_SANDBOX_ID: ${AUTOMATON_SANDBOX_ID:-}
+    volumes:
+      - automaton-data:/root/.automaton
+
+volumes:
+  automaton-data:
